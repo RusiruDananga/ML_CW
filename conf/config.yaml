@@ -1,0 +1,48 @@
+# config.yaml
+model_qty_pred_model_final:
+  identifier: qty_pred_model_final
+  name: xgboost
+  parameters:
+    learning_rate: 0.05
+    max_depth: 5
+    n_estimators: 150
+    subsample: 0.8
+    colsample_bytree: 0.8
+    alpha: 10
+    lambda: 1
+
+model_qty_pred_wdepartment_model_final:
+  identifier: qty_pred_wdepartment_model_final
+  name: xgboost
+  parameters:
+    learning_rate: 0.05
+    max_depth: 5
+    n_estimators: 150
+    subsample: 0.8
+    colsample_bytree: 0.8
+    alpha: 10
+    lambda: 1
+
+model_sales_pred_model_final:
+  identifier: sales_pred_model_final
+  name: xgboost
+  parameters:
+    learning_rate: 0.05
+    max_depth: 5
+    n_estimators: 150
+    subsample: 0.8
+    colsample_bytree: 0.8
+    alpha: 10
+    lambda: 1
+
+model_sales_pred_wdepartment_model_final:
+  identifier: sales_pred_wdepartment_model_final
+  name: xgboost
+  parameters:
+    learning_rate: 0.05
+    max_depth: 5
+    n_estimators: 150
+    subsample: 0.8
+    colsample_bytree: 0.8
+    alpha: 10
+    lambda: 1
