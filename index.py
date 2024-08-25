@@ -1,9 +1,17 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-import joblib
 import nbformat
 from nbconvert.preprocessors import ExecutePreprocessor
+
+try:
+    import joblib
+except ImportError:
+    import subprocess
+    import sys
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "joblib"])
+    import joblib
+
 
 # Navigation
 st.sidebar.title("Pages")
