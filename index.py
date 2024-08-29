@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 
 try:
     import joblib
@@ -77,6 +77,18 @@ if page == "Item Qty Prediction":
             prediction = self.model_qty.predict(X_new)
             print(f"Predicted item_qty: {prediction[0]}")
             return prediction[0]
+        
+        def predict_february(self, item_dept, store):
+            predictions = {}
+            current_date = datetime.strptime("2022/02/01", "%Y/%m/%d")
+            end_date = datetime.strptime("2022/02/28", "%Y/%m/%d")
+
+            while current_date <= end_date:
+                prediction = self.predict(current_date.strftime('%Y-%m-%d'), item_dept, store)
+                predictions[current_date.strftime('%Y-%m-%d')] = prediction
+                current_date += timedelta(days=1)
+
+            return predictions
 
     # Initialize the model
     xgb_model = XGBoostModel()
@@ -89,6 +101,11 @@ if page == "Item Qty Prediction":
         xgb_model.load_model('src/models/xgb_model_qty.pkl')
         prediction = xgb_model.predict(str(date_input), department_input, store_input)
         st.write(f"Predicted Item Quantity: {prediction}")
+    if st.button("Predict February"):
+        xgb_model.load_model('src/models/xgb_model_qty.pkl')
+        february_predictions = xgb_model.predict_february(department_input, store_input)
+        for date, prediction in february_predictions.items():
+            st.write(f"{date}: {prediction}")
 
 elif page == "Net Sales Prediction":
     class XGBoostModel:
@@ -152,6 +169,18 @@ elif page == "Net Sales Prediction":
             prediction = self.model_sales.predict(X_new)
             print(f"Predicted net_sales: {prediction[0]}")
             return prediction[0]
+        
+        def predict_february(self, item_dept, store):
+            predictions = {}
+            current_date = datetime.strptime("2022/02/01", "%Y/%m/%d")
+            end_date = datetime.strptime("2022/02/28", "%Y/%m/%d")
+
+            while current_date <= end_date:
+                prediction = self.predict_sales(current_date.strftime('%Y-%m-%d'), item_dept, store)
+                predictions[current_date.strftime('%Y-%m-%d')] = prediction
+                current_date += timedelta(days=1)
+
+            return predictions
 
     # Initialize the model
     xgb_model = XGBoostModel()
@@ -164,6 +193,11 @@ elif page == "Net Sales Prediction":
         xgb_model.load_model_sales('src/models/xgb_model_sales.pkl')
         prediction = xgb_model.predict_sales(str(date_input), department_input, store_input)
         st.write(f"Predicted Net Sales: {prediction}")
+    if st.button("Predict February"):
+        xgb_model.load_model_sales('src/models/xgb_model_sales.pkl')
+        february_predictions = xgb_model.predict_february(department_input, store_input)
+        for date, prediction in february_predictions.items():
+            st.write(f"{date}: {prediction}")
 
 elif page == "Item Qty Prediction 2":
     class XGBoostModel:
@@ -223,6 +257,19 @@ elif page == "Item Qty Prediction 2":
             prediction = self.model_sales.predict(X_new)
             print(f"Predicted net_sales: {prediction[0]}")
             return prediction[0]
+        
+        def predict_sales_february(self, store):
+            # Predict sales for each day in February
+            predictions = {}
+            current_date = datetime.strptime("2022/02/01", "%Y/%m/%d")
+            end_date = datetime.strptime("2022/02/28", "%Y/%m/%d")
+
+            while current_date <= end_date:
+                prediction = self.predict_sales(current_date.strftime('%Y-%m-%d'), store)
+                predictions[current_date.strftime('%Y-%m-%d')] = prediction
+                current_date += timedelta(days=1)
+
+            return predictions
 
     # Initialize the model
     xgb_model = XGBoostModel()
@@ -234,6 +281,11 @@ elif page == "Item Qty Prediction 2":
         xgb_model.load_model_sales('src/models/xgb_model_qty_wdepartment.pkl')
         prediction = xgb_model.predict_sales(str(date_input), store_input)
         st.write(f"Predicted Item Quantity: {prediction}")
+    if st.button("Predict February Item Quantity"):
+        xgb_model.load_model_sales('src/models/xgb_model_qty_wdepartment.pkl')
+        february_predictions = xgb_model.predict_sales_february(store_input)
+        for date, prediction in february_predictions.items():
+            st.write(f"{date}: {prediction}")
 
 elif page == "Net Sales Prediction 2":
     class XGBoostModel:
@@ -293,6 +345,19 @@ elif page == "Net Sales Prediction 2":
             prediction = self.model_sales.predict(X_new)
             print(f"Predicted net_sales: {prediction[0]}")
             return prediction[0]
+        
+        def predict_sales_february(self, store):
+            # Predict sales for each day in February
+            predictions = {}
+            current_date = datetime.strptime("2022/02/01", "%Y/%m/%d")
+            end_date = datetime.strptime("2022/02/28", "%Y/%m/%d")
+
+            while current_date <= end_date:
+                prediction = self.predict_sales(current_date.strftime('%Y-%m-%d'), store)
+                predictions[current_date.strftime('%Y-%m-%d')] = prediction
+                current_date += timedelta(days=1)
+
+            return predictions
 
     # Initialize the model
     xgb_model = XGBoostModel()
@@ -304,3 +369,8 @@ elif page == "Net Sales Prediction 2":
         xgb_model.load_model_sales('src/models/xgb_model_sales_wdepartment.pkl')
         prediction = xgb_model.predict_sales(str(date_input), store_input)
         st.write(f"Predicted Net Sales: {prediction}")
+    if st.button("Predict February Net Sales"):
+        xgb_model.load_model_sales('src/models/xgb_model_sales_wdepartment.pkl')
+        february_predictions = xgb_model.predict_sales_february(store_input)
+        for date, prediction in february_predictions.items():
+            st.write(f"{date}: {prediction}")
